@@ -17,9 +17,10 @@ body {
     font-family: 'Tajawal', sans-serif;
     /* --- غير صورة الخلفية من هنا --- */
     background-image: url('background.jpeg');
-    background-size: cover;
+    background-size: contain;
     background-position: top;
     background-attachment: fixed;
+    background-repeat: no-repeat;
     direction: rtl;
     color: var(--text-color);
     display: flex;
