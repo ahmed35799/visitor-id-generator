@@ -18,7 +18,7 @@ body {
     /* --- غير صورة الخلفية من هنا --- */
     background-image: url('background.jpeg');
     background-size: cover;
-    background-position: center;
+    background-position: top;
     background-attachment: fixed;
     direction: rtl;
     color: var(--text-color);
