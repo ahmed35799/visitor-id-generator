@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Cairo', 'Roboto', sans-serif;
     background: linear-gradient(to bottom right, #e0f7fa, #80deea);
     direction: rtl;
     margin: 0;
@@ -121,4 +121,9 @@ form button:hover {
 
 .id-footer button:hover {
     background-color: #0056b3;
+}
+
+/* إخفاء الأزرار أثناء حفظ البطاقة */
+.id-card.saving button {
+    display: none;
 }
