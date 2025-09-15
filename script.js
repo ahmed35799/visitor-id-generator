@@ -14,8 +14,6 @@ form.addEventListener("submit", function(e) {
     const fullName = document.getElementById("fullName").value;
     const organization = document.getElementById("organization").value;
     const category = document.getElementById("category").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
 
     const visitorID = "VIS-" + Date.now();
 
@@ -44,17 +42,20 @@ form.addEventListener("submit", function(e) {
 
 // تحميل البطاقة كصورة PNG
 downloadBtn.addEventListener("click", () => {
-    html2canvas(idCard).then(canvas => {
+    idCard.classList.add("saving"); // إخفاء الأزرار أثناء الحفظ
+    html2canvas(idCard, {scale: 2}).then(canvas => { // تحسين الجودة
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "Visitor_ID.png";
         link.click();
+        idCard.classList.remove("saving");
     });
 });
 
 // تحميل البطاقة كـ PDF
 downloadPDF.addEventListener("click", () => {
-    html2canvas(idCard).then(canvas => {
+    idCard.classList.add("saving"); // إخفاء الأزرار أثناء الحفظ
+    html2canvas(idCard, {scale: 2}).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({
@@ -64,5 +65,6 @@ downloadPDF.addEventListener("click", () => {
         });
         pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
         pdf.save("Visitor_ID.pdf");
+        idCard.classList.remove("saving");
     });
 });
