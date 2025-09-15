@@ -42,8 +42,8 @@ form.addEventListener("submit", function(e) {
 
 // تحميل البطاقة كصورة PNG
 downloadBtn.addEventListener("click", () => {
-    idCard.classList.add("saving"); // إخفاء الأزرار أثناء الحفظ
-    html2canvas(idCard, {scale: 2}).then(canvas => { // تحسين الجودة
+    idCard.classList.add("saving"); 
+    html2canvas(idCard, {scale: 2}).then(canvas => { 
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
         link.download = "Visitor_ID.png";
@@ -54,7 +54,7 @@ downloadBtn.addEventListener("click", () => {
 
 // تحميل البطاقة كـ PDF
 downloadPDF.addEventListener("click", () => {
-    idCard.classList.add("saving"); // إخفاء الأزرار أثناء الحفظ
+    idCard.classList.add("saving"); 
     html2canvas(idCard, {scale: 2}).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
         const { jsPDF } = window.jspdf;
