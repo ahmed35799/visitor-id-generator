@@ -1,45 +1,68 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الزوار</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- مكتبة توليد QR Code -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الزوار - مهرجان</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>نموذج تسجيل الزائر</h1>
-        <form id="visitorForm">
-            <label>الاسم الكامل:</label>
-            <input type="text" id="fullName" required>
+<div class="container">
+    <!-- شعار الجهة -->
+    <div class="logo">
+        <img src="logo.png" alt="شعار الجهة">
+    </div>
 
-            <label>جهة العمل / المؤسسة:</label>
-            <input type="text" id="organization">
+    <!-- جملة ترحيبية متحركة -->
+    <div class="welcome-text">
+        مرحبًا بكم في مهرجاننا – سجل بياناتك واحصل على بطاقة الزائر
+    </div>
 
-            <label>الفئة:</label>
-            <select id="category">
-                <option value="موظف">موظف</option>
-                <option value="طالب">طالب</option>
-                <option value="VIP">VIP</option>
-            </select>
+    <form id="visitorForm">
+        <label>الاسم الكامل:</label>
+        <input type="text" id="fullName" required>
 
-            <label>البريد الإلكتروني:</label>
-            <input type="email" id="email">
+        <label>الجهة / الشركة / المؤسسة:</label>
+        <input type="text" id="organization">
 
-            <label>رقم الهاتف:</label>
-            <input type="text" id="phone">
+        <label>الفئة:</label>
+        <select id="category">
+            <option value="موظف">موظف</option>
+            <option value="طالب">طالب</option>
+            <option value="VIP">VIP</option>
+        </select>
 
-            <button type="submit">تسجيل وإنشاء QR</button>
-        </form>
+        <label>البريد الإلكتروني:</label>
+        <input type="email" id="email">
 
-        <div id="qrContainer">
-            <h2>QR Code للزائر</h2>
-            <canvas id="qrcode"></canvas>
+        <label>رقم الهاتف:</label>
+        <input type="text" id="phone">
+
+        <button type="submit">تسجيل وإنشاء QR</button>
+    </form>
+
+    <div id="qrContainer">
+        <h2>QR Code للزائر</h2>
+        <canvas id="qrcode"></canvas>
+    </div>
+
+    <!-- بطاقة ID للعرض -->
+    <div id="idCard" class="id-card">
+        <div class="id-header">
+            <img src="logo.png" alt="Logo" class="id-logo">
+            <h3 class="id-title">بطاقة الزائر</h3>
+        </div>
+        <div class="id-body">
+            <p id="idName"></p>
+            <p id="idCategory"></p>
+            <p id="idOrganization"></p>
+            <canvas id="idQR"></canvas>
         </div>
     </div>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
