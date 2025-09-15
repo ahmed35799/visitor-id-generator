@@ -1,79 +1,96 @@
-const form = document.getElementById("visitorForm");
-const qrCanvas = document.getElementById("qrcode");
-const idCard = document.getElementById("idCard");
-const idName = document.getElementById("idName");
-const idCategory = document.getElementById("idCategory");
-const idOrganization = document.getElementById("idOrganization");
-const idQR = document.getElementById("idQR");
-const downloadBtn = document.getElementById("downloadBtn");
-const downloadPDF = document.getElementById("downloadPDF");
+document.addEventListener('DOMContentLoaded', () => {
+    // تحديد العناصر الأساسية
+    const formSection = document.getElementById('form-section');
+    const cardDisplaySection = document.getElementById('card-display-section');
+    const visitorForm = document.getElementById('visitorForm');
+    
+    // عناصر بطاقة الهوية
+    const visitorIdCard = document.getElementById('visitorIdCard');
+    const cardName = document.getElementById('cardName');
+    const cardOrganization = document.getElementById('cardOrganization');
+    const cardCategory = document.getElementById('cardCategory');
+    const cardQrCanvas = document.getElementById('cardQrCanvas');
 
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
+    // أزرار التحكم
+    const downloadPngBtn = document.getElementById('downloadPngBtn');
+    const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+    const createNewCardBtn = document.getElementById('createNewCardBtn');
 
-    const fullName = document.getElementById("fullName").value;
-    const organization = document.getElementById("organization").value;
-    const category = document.getElementById("category").value;
+    // عند تقديم النموذج
+    visitorForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const visitorID = "VIS-" + Date.now();
+        // الحصول على البيانات من النموذج
+        const fullName = document.getElementById('fullName').value;
+        const organization = document.getElementById('organization').value;
+        const category = document.getElementById('category').value;
+        const visitorID = "VIS-" + Date.now();
 
-    // ✅ تجهيز JSON كبيانات للكيوآر
-    const qrObject = {
-        visitor_id: visitorID,
-        full_name: fullName,
-        organization: organization,
-        category: category
-    };
+        // تجهيز بيانات QR Code بصيغة JSON
+        const qrObject = {
+            visitor_id: visitorID,
+            full_name: fullName,
+            organization: organization,
+            category: category
+        };
+        const qrData = JSON.stringify(qrObject);
 
-    // تحويل الكائن إلى JSON مصغر (بدون مسافات إضافية)
-    const qrData = JSON.stringify(qrObject);
+        // تعبئة بيانات البطاقة
+        cardName.textContent = fullName;
+        cardOrganization.textContent = organization || 'زائر'; // قيمة افتراضية إذا كانت الجهة فارغة
+        cardCategory.textContent = category;
 
-    // توليد QR للعرض العام
-    QRCode.toCanvas(qrCanvas, qrData, function (error) {
-        if (error) console.error(error);
-    });
+        // إعدادات QR Code لجودة عالية
+        const qrOptions = {
+            errorCorrectionLevel: 'H', // مستوى عالٍ لتصحيح الأخطاء
+            width: 180, // تحديد حجم ثابت للكود
+            margin: 1,
+            color: {
+                dark: "#2c3e50", // لون الكود
+                light: "#FFFFFF" // لون الخلفية
+            }
+        };
 
-    // ملء بطاقة ID
-    idName.textContent = `الاسم: ${fullName}`;
-    idCategory.textContent = `الفئة: ${category}`;
-    idOrganization.textContent = `جهة العمل/الجهة التابعة: ${organization}`;
-
-    // توليد QR داخل البطاقة
-    QRCode.toCanvas(idQR, qrData, function (error) {
-        if (error) console.error(error);
-    });
-
-    // عرض البطاقة
-    idCard.style.display = "block";
-
-    alert(`تم تسجيل الزائر بنجاح! ID: ${visitorID}`);
-});
-
-// تحميل البطاقة كصورة PNG
-downloadBtn.addEventListener("click", () => {
-    idCard.classList.add("saving"); 
-    html2canvas(idCard, {scale: 2}).then(canvas => { 
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = "Visitor_ID.png";
-        link.click();
-        idCard.classList.remove("saving");
-    });
-});
-
-// تحميل البطاقة كـ PDF
-downloadPDF.addEventListener("click", () => {
-    idCard.classList.add("saving"); 
-    html2canvas(idCard, {scale: 2}).then(canvas => {
-        const imgData = canvas.toDataURL("image/png");
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "px",
-            format: [canvas.width, canvas.height]
+        // إنشاء QR Code داخل البطاقة
+        QRCode.toCanvas(cardQrCanvas, qrData, qrOptions, function (error) {
+            if (error) console.error(error);
+            console.log('QR Code generated successfully!');
         });
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save("Visitor_ID.pdf");
-        idCard.classList.remove("saving");
+        
+        // إخفاء النموذج وإظهار قسم البطاقة
+        formSection.style.display = 'none';
+        cardDisplaySection.style.display = 'block';
+    });
+    
+    // تحميل البطاقة كصورة PNG
+    downloadPngBtn.addEventListener('click', () => {
+        html2canvas(visitorIdCard, { scale: 3 }).then(canvas => {
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `visitor-card-${document.getElementById('fullName').value}.png`;
+            link.click();
+        });
+    });
+
+    // تحميل البطاقة كـ PDF
+    downloadPdfBtn.addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        html2canvas(visitorIdCard, { scale: 3 }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'px',
+                format: [canvas.width, canvas.height]
+            });
+            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+            pdf.save(`visitor-card-${document.getElementById('fullName').value}.pdf`);
+        });
+    });
+
+    // زر لإنشاء بطاقة جديدة (إعادة إظهار النموذج)
+    createNewCardBtn.addEventListener('click', () => {
+        cardDisplaySection.style.display = 'none';
+        formSection.style.display = 'block';
+        visitorForm.reset(); // إعادة تعيين حقول النموذج
     });
 });
