@@ -17,7 +17,16 @@ form.addEventListener("submit", function(e) {
 
     const visitorID = "VIS-" + Date.now();
 
-    const qrData = `ID: ${visitorID}\nالاسم: ${fullName}\nجهة العمل: ${organization}\nالفئة: ${category}`;
+    // ✅ تجهيز JSON كبيانات للكيوآر
+    const qrObject = {
+        visitor_id: visitorID,
+        full_name: fullName,
+        organization: organization,
+        category: category
+    };
+
+    // تحويل الكائن إلى JSON مصغر (بدون مسافات إضافية)
+    const qrData = JSON.stringify(qrObject);
 
     // توليد QR للعرض العام
     QRCode.toCanvas(qrCanvas, qrData, function (error) {
